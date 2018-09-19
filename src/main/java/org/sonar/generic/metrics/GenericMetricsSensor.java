@@ -6,6 +6,7 @@
 package org.sonar.generic.metrics;
 
 import java.io.File;
+import java.util.Optional;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.sonar.api.batch.fs.FilePredicate;
@@ -46,8 +47,13 @@ public class GenericMetricsSensor implements Sensor {
   public void execute(SensorContext context) {
     LOG.debug("Execute GenericMetricsSensor");
 
-    String fileName = config.get(GenericMetrics.JSON_DATA_PROPERTY).get();
-    String json = fileReader.readFile(fileName);
+    Optional<String> fileName = config.get(GenericMetrics.JSON_DATA_PROPERTY);
+    if (!fileName.isPresent()){
+      LOG.debug("No json data");
+      return;
+    }
+
+    String json = fileReader.readFile(fileName.get());
     JSONObject rootObject = new JSONObject(json);
 
     JSONArray measures = rootObject.getJSONArray("measures");
