@@ -87,6 +87,13 @@ public class TestGenericMetricsSensor {
     verify(fileReader, times(1)).readFile("filename");
   }
 
+  @Test
+  public void whenExecutingAndNoFileNameShouldNotThrow(){
+    when(config.get(GenericMetrics.JSON_DATA_PROPERTY)).thenReturn(Optional.empty());
+    sensor.execute(sensorContext);
+    verify(fileReader, times(0)).readFile("filename");
+  }
+
   private String readResourceAsString(String resourceName){
     InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName);
     InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);

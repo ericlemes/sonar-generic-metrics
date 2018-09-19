@@ -55,7 +55,7 @@ public class GenericMetrics implements Metrics {
     Optional<String> configurationJson = config.get(JSON_DATA_PROPERTY);
     if (!configurationJson.isPresent()){
       LOG.warn(JSON_DATA_PROPERTY + " property is empty.");
-      return null;
+      return new ArrayList<>();
     }
     metrics = parseJson(fileReader.readFile(configurationJson.get()));
     return metrics;

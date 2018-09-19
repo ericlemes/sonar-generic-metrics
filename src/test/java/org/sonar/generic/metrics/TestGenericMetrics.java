@@ -39,9 +39,9 @@ public class TestGenericMetrics {
   }
 
   @Test
-  public void whenGetMetricsAndNoConfigurationPropertiesShouldThrow(){
+  public void whenGetMetricsAndNoConfigurationPropertiesShouldReturnEmptyArray(){
     List<Metric> metrics = this.genericMetrics.getMetrics();
-    Assert.assertNull(metrics);
+    Assert.assertEquals(0, metrics.size());
   }
 
   @Test
@@ -71,11 +71,11 @@ public class TestGenericMetrics {
   }
 
   @Test
-  public void whenGetMetricsAndNoDataPropertyShouldReturnNull(){
+  public void whenGetMetricsAndNoDataPropertyShouldReturnEmptyArray(){
     when(configurationMock.get(GenericMetrics.JSON_DATA_PROPERTY)).thenReturn(Optional.empty());
 
     List<Metric> metrics = genericMetrics.getMetrics();
-    assertNull(metrics);
+    assertEquals(0, metrics.size());
   }
 
   @Test
