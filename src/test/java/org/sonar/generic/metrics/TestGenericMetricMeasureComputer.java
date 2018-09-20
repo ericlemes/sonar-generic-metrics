@@ -5,6 +5,7 @@
  */
 package org.sonar.generic.metrics;
 
+import java.util.ArrayList;
 import org.junit.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.sonar.api.ce.measure.Component;
+import org.sonar.api.ce.measure.Measure;
 import org.sonar.api.ce.measure.MeasureComputer.*;
 import org.sonar.api.ce.measure.MeasureComputer.MeasureComputerDefinition.Builder;
 import org.sonar.api.measures.Metric;
@@ -51,35 +53,111 @@ public class TestGenericMetricMeasureComputer {
     verify(builder, times(1)).build();
   }
 
-  @Test
-  public void testWhenCallingComputeForIntMetricShouldComputeSumCorrectly(){
-    TestHelper.setupComponentAndIntMeasure(context, Component.Type.FILE, 3, metric.key());
-    this.measureComputer.compute(context);
+  private void addDoubleMeasure(double value){
+    ArrayList<Measure> measures = (ArrayList<Measure>)this.context.getChildrenMeasures(this.metric.key());
+    Measure measureObj = mock(Measure.class);
+    when(measureObj.getDoubleValue()).thenReturn(value);
+    measures.add(measureObj);
+  }
 
-    TestHelper.setupComponentAndIntMeasure(context, Component.Type.FILE, 2, metric.key());
-    this.measureComputer.compute(context);
+  private void addIntMeasure(int value){
+    ArrayList<Measure> measures = (ArrayList<Measure>)this.context.getChildrenMeasures(this.metric.key());
+    Measure measureObj = mock(Measure.class);
+    when(measureObj.getIntValue()).thenReturn(value);
+    measures.add(measureObj);
+  }
 
-    TestHelper.setupProject(context);
-    this.measureComputer.compute(context);
-
-    verify(context).addMeasure(metric.key(), 5);
+  private Component addParentComponent(Component.Type componentType){
+    Component component = mock(Component.class);
+    when(component.getType()).thenReturn(componentType);
+    ArrayList<Measure> measures = new ArrayList<>();
+    when(context.getChildrenMeasures(this.metric.key())).thenReturn(measures);
+    when(context.getComponent()).thenReturn(component);
+    return component;
   }
 
   @Test
-  public void testWhenCallingComputeForFloatMetricShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsFloatShouldComputeSumCorrectly(){
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
-    TestHelper.setupComponentAndDoubleMeasure(context, Component.Type.FILE, 3.5, metric.key());
+    addParentComponent(Component.Type.DIRECTORY);
+    addDoubleMeasure(10.0);
+    addDoubleMeasure(0.5);
+
     this.measureComputer.compute(context);
 
-    TestHelper.setupComponentAndDoubleMeasure(context, Component.Type.FILE, 2.5, metric.key());
+    verify(context).addMeasure(metric.key(), 10.5d);
+  }
+
+  @Test
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsIntShouldComputeSumCorrectly(){
+    this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
+    this.measureComputer = new GenericMetricMeasureComputer(metric);
+
+    addParentComponent(Component.Type.DIRECTORY);
+    addIntMeasure(10);
+    addIntMeasure(5);
+
     this.measureComputer.compute(context);
 
-    TestHelper.setupProject(context);
+    verify(context).addMeasure(metric.key(), 15);
+  }
+
+  @Test
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsFloatShouldComputeSumCorrectly(){
+    this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
+    this.measureComputer = new GenericMetricMeasureComputer(metric);
+
+    addParentComponent(Component.Type.MODULE);
+    addDoubleMeasure(10.0);
+    addDoubleMeasure(0.5);
+
     this.measureComputer.compute(context);
 
-    verify(context).addMeasure(metric.key(), 6.0d);
+    verify(context).addMeasure(metric.key(), 10.5d);
+  }
+
+  @Test
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsIntShouldComputeSumCorrectly(){
+    this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
+    this.measureComputer = new GenericMetricMeasureComputer(metric);
+
+    addParentComponent(Component.Type.MODULE);
+    addIntMeasure(10);
+    addIntMeasure(5);
+
+    this.measureComputer.compute(context);
+
+    verify(context).addMeasure(metric.key(), 15);
+  }
+
+  @Test
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsFloatShouldComputeSumCorrectly(){
+    this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
+    this.measureComputer = new GenericMetricMeasureComputer(metric);
+
+    addParentComponent(Component.Type.PROJECT);
+    addDoubleMeasure(10.0);
+    addDoubleMeasure(0.5);
+
+    this.measureComputer.compute(context);
+
+    verify(context).addMeasure(metric.key(), 10.5d);
+  }
+
+  @Test
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsIntShouldComputeSumCorrectly(){
+    this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
+    this.measureComputer = new GenericMetricMeasureComputer(metric);
+
+    addParentComponent(Component.Type.PROJECT);
+    addIntMeasure(10);
+    addIntMeasure(5);
+
+    this.measureComputer.compute(context);
+
+    verify(context).addMeasure(metric.key(), 15);
   }
 
   @Test
