@@ -5,7 +5,6 @@
  */
 package org.sonar.generic.metrics;
 
-import org.sonar.api.ce.measure.Component;
 import org.sonar.api.ce.measure.Measure;
 import org.sonar.api.ce.measure.MeasureComputer;
 import org.sonar.api.measures.Metric;
@@ -25,48 +24,42 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
     return context.newDefinitionBuilder().setOutputMetrics(metric.key()).build();
   }
 
-  private int intSum;
-  private double doubleSum;
-
   @Override
   public void compute(MeasureComputerContext context) {
     LOG.debug("Computing measures for " + metric.key());
-    if (context.getComponent().getType() == Component.Type.PROJECT){
-      addProjectMeasure(context);
-    }
-    else if (context.getComponent().getType() == Component.Type.FILE){
-      sumFileMeasure(context, context.getMeasure(metric.key()));
+    switch (context.getComponent().getType()){
+      case PROJECT:
+      case MODULE:
+      case DIRECTORY:
+        sumChildMeasure(context);
+        break;
     }
   }
 
-  private void addProjectMeasure(MeasureComputerContext context){
+  private void sumChildMeasure(MeasureComputerContext context){
     switch (metric.getType()) {
     case INT:
-      context.addMeasure(metric.key(), intSum);
+      sumIntChildMeasure(context);
       break;
     case FLOAT:
-      context.addMeasure(metric.key(), doubleSum);
-      break;
-    default:
-      LOG.warn("Type not expected: " + metric.valueType().toString());
+      sumDoubleChildMeasure(context);
       break;
     }
   }
 
-  private void sumFileMeasure(MeasureComputerContext context, Measure m) {
-    if (m == null)
-      return;
-
-    switch (metric.getType()) {
-      case INT:
-        intSum += m.getIntValue();
-        break;
-      case FLOAT:
-        doubleSum += m.getDoubleValue();
-        break;
-      default:
-        LOG.warn("Type not expected: " + metric.valueType().toString());
-        break;
+  private void sumIntChildMeasure(MeasureComputerContext context){
+    int sum = 0;
+    for(Measure m : context.getChildrenMeasures(metric.key())) {
+      sum += m.getIntValue();
     }
+    context.addMeasure(metric.key(), sum);
+  }
+
+  private void sumDoubleChildMeasure(MeasureComputerContext context){
+    double sum = 0;
+    for(Measure m : context.getChildrenMeasures(metric.key())) {
+      sum += m.getDoubleValue();
+    }
+    context.addMeasure(metric.key(), sum);
   }
 }
