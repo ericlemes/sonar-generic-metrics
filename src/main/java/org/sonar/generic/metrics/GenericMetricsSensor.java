@@ -27,6 +27,10 @@ public class GenericMetricsSensor implements Sensor {
 
   private FileReader fileReader;
 
+  public static final String INT_PROPERTY = "INT";
+
+  public static final String FLOAT_PROPERTY = "FLOAT";
+
   public GenericMetricsSensor(Configuration config){
     this.config = config;
     this.fileReader = new FileReaderImpl();
@@ -81,12 +85,12 @@ public class GenericMetricsSensor implements Sensor {
     }
 
     Object value = measure.get("value");
-    if (m.getType().name().equals(Metric.ValueType.INT.name()))
+    if (m.getType().name().equals(INT_PROPERTY))
       context.newMeasure().forMetric(m).on(file).withValue((int)value).save();
-    if (m.getType().name().equals(Metric.ValueType.FLOAT.name()))
+    if (m.getType().name().equals(FLOAT_PROPERTY))
       context.newMeasure().forMetric(m).on(file).withValue((double)value).save();
     else
-      LOG.error("Unsupported type " + m.getType().name());
+      LOG.error("Unsupported type " + m.getType().name() + ". ");
   }
 
 }
