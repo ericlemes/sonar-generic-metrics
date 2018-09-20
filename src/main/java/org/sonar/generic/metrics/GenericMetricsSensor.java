@@ -81,9 +81,9 @@ public class GenericMetricsSensor implements Sensor {
     }
 
     Object value = measure.get("value");
-    if (m.getType() == Metric.ValueType.INT)
+    if (m.getType().name().equals(Metric.ValueType.INT.name()))
       context.newMeasure().forMetric(m).on(file).withValue((int)value).save();
-    if (m.getType() == Metric.ValueType.FLOAT)
+    if (m.getType().name().equals(Metric.ValueType.FLOAT.name()))
       context.newMeasure().forMetric(m).on(file).withValue((double)value).save();
     else
       LOG.error("Unsupported type " + m.getType().name());
