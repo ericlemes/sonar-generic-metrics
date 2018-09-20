@@ -123,11 +123,37 @@ public class TestGenericMetricsSensor {
     String json = readResourceAsString("measures1.json");
     when(fileReader.readFile("filename")).thenReturn(json);
 
+    GenericMetrics.metrics = null;
+
     readMetrics();
 
     sensor.execute(this.sensorContext);
 
     verify(sensorContext, times(4)).newMeasure();
+  }
+
+  @Test
+  public void whenExecutingAndCanReadFileAndHasUnsupportedMetricShouldNotPublishMetrics() throws IOException{
+    FilePredicate filePredicate1 = mock(FilePredicate.class);
+    FilePredicate filePredicate2 = mock(FilePredicate.class);
+
+    when(filePredicates.is(any(File.class))).thenReturn(filePredicate1, filePredicate2);
+
+    InputFile inputFile1 = mock(InputFile.class);
+    InputFile inputFile2 = mock(InputFile.class);
+
+    when(fileSystem.inputFile(filePredicate1)).thenReturn(inputFile1);
+    when(fileSystem.inputFile(filePredicate2)).thenReturn(inputFile2);
+
+    String json = readResourceAsString("measures2.json");
+    when(fileReader.readFile("filename")).thenReturn(json);
+
+    GenericMetrics.metrics = null;
+    readMetrics();
+
+    sensor.execute(this.sensorContext);
+
+    verify(sensorContext, times(0)).newMeasure();
   }
 
   @Test

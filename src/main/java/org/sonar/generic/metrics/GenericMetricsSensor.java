@@ -85,12 +85,16 @@ public class GenericMetricsSensor implements Sensor {
     }
 
     Object value = measure.get("value");
-    if (m.getType().name().equals(INT_PROPERTY))
+    if (m.getType().name().equals(INT_PROPERTY)) {
       context.newMeasure().forMetric(m).on(file).withValue((int)value).save();
-    if (m.getType().name().equals(FLOAT_PROPERTY))
+    }
+    else if (m.getType().name().equals(FLOAT_PROPERTY)) {
       context.newMeasure().forMetric(m).on(file).withValue((double)value).save();
-    else
-      LOG.error("Unsupported type " + m.getType().name() + ". ");
+    }
+    else {
+      LOG.error("Processing file " + fileName);
+      LOG.error("Unsupported type " + m.getType().name() + ". For metric " + metricKey);
+    }
   }
 
 }
