@@ -11,5 +11,4 @@ public class EnvironmentImpl implements Environment {
   public String getEnvironmentVariable(String variableName) {
     return System.getenv(variableName);
   }
-
 }
