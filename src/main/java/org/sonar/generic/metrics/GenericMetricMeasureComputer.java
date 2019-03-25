@@ -3,6 +3,7 @@
  * Copyright (C) 2018
  * http://github.com/ericlemes/sonar-generic-metrics
  */
+
 package org.sonar.generic.metrics;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -13,105 +14,105 @@ import org.sonar.api.utils.log.Logger;
 
 public class GenericMetricMeasureComputer implements MeasureComputer {
 
-	private Metric<?> metric;
-	private final Logger LOG = LoggerWithDebugCheck.get(GenericMetricMeasureComputer.class);
+  private Metric metric;
+  private final Logger LOG = LoggerWithDebugCheck.get(GenericMetricMeasureComputer.class);
 
-	public GenericMetricMeasureComputer(Metric<?> metric) {
-		this.metric = metric;
-	}
+  public GenericMetricMeasureComputer(Metric metric) {
+    this.metric = metric;
+  }
 
-	@Override
-	public MeasureComputerDefinition define(MeasureComputerDefinitionContext context) {
-		return context.newDefinitionBuilder().setOutputMetrics(metric.key()).build();
-	}
+  @Override
+  public MeasureComputerDefinition define(MeasureComputerDefinitionContext context) {
+    return context.newDefinitionBuilder().setOutputMetrics(metric.key()).build();
+  }
 
-	@Override
-	public void compute(MeasureComputerContext context) {
-		if (context.getMeasure(metric.key()) != null)
-			return;
-		LOG.debug("Computing measures for " + metric.key());
-		switch (context.getComponent().getType()) {
-		case PROJECT:
-		case MODULE:
-		case DIRECTORY:
-			computeChildMeasure(context);
-			break;
-		default:
-			break;
-		}
-	}
+  @Override
+  public void compute(MeasureComputerContext context) {
+    if (context.getMeasure(metric.key()) != null)
+      return;
+    LOG.debug("Computing measures for " + metric.key());
+    switch (context.getComponent().getType()) {
+    case PROJECT:
+    case MODULE:
+    case DIRECTORY:
+      computeChildMeasure(context);
+      break;
+    default:
+      break;
+    }
+  }
 
-	private void computeChildMeasure(MeasureComputerContext context) {
-		switch (metric.getType()) {
-		case INT:
-			computeIntChildMeasure(context);
-			break;
-		case FLOAT:
-			computeDoubleChildMeasure(context);
-			break;
-		case PERCENT:
-			computePercentChildMeasure(context);
-			break;
-		case RATING:
-			computeRatingChildMeasure(context);
-			break;
-		case MILLISEC:
-			computeMillsecChildMeasure(context);
-			break;
-		default:
-			throw new NotImplementedException("No compute method for " + metric.getType());
-		}
-	}
+  private void computeChildMeasure(MeasureComputerContext context) {
+    switch (metric.getType()) {
+    case INT:
+      computeIntChildMeasure(context);
+      break;
+    case FLOAT:
+      computeDoubleChildMeasure(context);
+      break;
+    case PERCENT:
+      computePercentChildMeasure(context);
+      break;
+    case RATING:
+      computeRatingChildMeasure(context);
+      break;
+    case MILLISEC:
+      computeMillsecChildMeasure(context);
+      break;
+    default:
+      throw new NotImplementedException("No compute method for " + metric.getType());
+    }
+  }
 
-	private void computeIntChildMeasure(MeasureComputerContext context) {
-		int sum = 0;
-		for (Measure m : context.getChildrenMeasures(metric.key())) {
-			sum += m.getIntValue();
-		}
-		context.addMeasure(metric.key(), sum);
-	}
+  private void computeIntChildMeasure(MeasureComputerContext context) {
+    int sum = 0;
+    for (Measure m : context.getChildrenMeasures(metric.key())) {
+      sum += m.getIntValue();
+    }
+    context.addMeasure(metric.key(), sum);
+  }
 
-	private void computeDoubleChildMeasure(MeasureComputerContext context) {
-		double sum = 0;
-		for (Measure m : context.getChildrenMeasures(metric.key())) {
-			sum += m.getDoubleValue();
-		}
-		context.addMeasure(metric.key(), sum);
-	}
+  private void computeDoubleChildMeasure(MeasureComputerContext context) {
+    double sum = 0;
+    for (Measure m : context.getChildrenMeasures(metric.key())) {
+      sum += m.getDoubleValue();
+    }
+    context.addMeasure(metric.key(), sum);
+  }
 
-	private void computePercentChildMeasure(MeasureComputerContext context) {
-		double sum = 0;
-		double noMeasures = 0;
-		for (Measure m : context.getChildrenMeasures(metric.key())) {
-			double val = m.getDoubleValue();
-			if (val > 0) {
-				noMeasures++;
-				sum += val;
-			}
-		}
-		double total = (noMeasures > 0) ? (sum / noMeasures) : 0.0;
-		context.addMeasure(metric.key(), total);
-	}
+  private void computePercentChildMeasure(MeasureComputerContext context) {
+    double sum = 0;
+    double noMeasures = 0;
+    for (Measure m : context.getChildrenMeasures(metric.key())) {
+      double val = m.getDoubleValue();
+      if (val > 0) {
+        noMeasures++;
+        sum += val;
+      }
+    }
+    double total = (noMeasures > 0) ? (sum / noMeasures) : 0.0;
+    context.addMeasure(metric.key(), total);
+  }
 
-	private void computeRatingChildMeasure(MeasureComputerContext context) {
-		double sum = 0;
-		double noMeasures = 0;
-		for (Measure m : context.getChildrenMeasures(metric.key())) {
-			double val = m.getIntValue();
-			if (val > 0) {
-				noMeasures++;
-				sum += val;
-			}
-		}
-		int raiting = (noMeasures > 0) ? (int) Math.round(sum / noMeasures) : 0;
-		context.addMeasure(metric.key(), raiting);
-	}
+  private void computeRatingChildMeasure(MeasureComputerContext context) {
+    double sum = 0;
+    double noMeasures = 0;
+    for (Measure m : context.getChildrenMeasures(metric.key())) {
+      double val = m.getIntValue();
+      if (val > 0) {
+        noMeasures++;
+        sum += val;
+      }
+    }
+    int raiting = (noMeasures > 0) ? (int) Math.round(sum / noMeasures) : 0;
+    context.addMeasure(metric.key(), raiting);
+  }
 
-	private void computeMillsecChildMeasure(MeasureComputerContext context) {
-		long sum = 0;
-		for (Measure m : context.getChildrenMeasures(metric.key())) {
-			sum += m.getLongValue();
-		}
-		context.addMeasure(metric.key(), sum);
-	}
+  private void computeMillsecChildMeasure(MeasureComputerContext context) {
+    long sum = 0;
+    for (Measure m : context.getChildrenMeasures(metric.key())) {
+      sum += m.getLongValue();
+    }
+    context.addMeasure(metric.key(), sum);
+  }
 }

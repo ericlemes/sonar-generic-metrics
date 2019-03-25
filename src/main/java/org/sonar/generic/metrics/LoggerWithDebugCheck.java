@@ -14,15 +14,15 @@ public class LoggerWithDebugCheck implements Logger {
 
   private Logger internalLogger;
 
-  public LoggerWithDebugCheck(Logger internalLogger){
+  public LoggerWithDebugCheck(Logger internalLogger) {
     this.internalLogger = internalLogger;
   }
 
-  public LoggerWithDebugCheck(Class<?> name){
+  public LoggerWithDebugCheck(Class<?> name) {
     this.internalLogger = Loggers.get(name);
   }
 
-  public static Logger get(Class<?> name){
+  public static Logger get(Class<?> name) {
     return new LoggerWithDebugCheck(name);
   }
 

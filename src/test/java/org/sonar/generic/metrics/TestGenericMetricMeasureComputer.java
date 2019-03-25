@@ -3,6 +3,7 @@
  * Copyright (C) 2018
  * http://github.com/ericlemes/sonar-generic-metrics
  */
+
 package org.sonar.generic.metrics;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class TestGenericMetricMeasureComputer {
   private MeasureComputerContext context;
 
   @Before
-  public void setUp(){
+  public void setUp() {
     MockitoAnnotations.initMocks(this);
 
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
@@ -44,7 +45,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void whenDefiningShouldCreateMetricDefinition(){
+  public void whenDefiningShouldCreateMetricDefinition() {
     Builder builder = mock(Builder.class);
     when(definitionContext.newDefinitionBuilder()).thenReturn(builder);
     when(builder.setOutputMetrics("metrickey")).thenReturn(builder);
@@ -53,21 +54,21 @@ public class TestGenericMetricMeasureComputer {
     verify(builder, times(1)).build();
   }
 
-  private void addDoubleMeasure(double value){
-    ArrayList<Measure> measures = (ArrayList<Measure>)this.context.getChildrenMeasures(this.metric.key());
+  private void addDoubleMeasure(double value) {
+    ArrayList<Measure> measures = (ArrayList<Measure>) this.context.getChildrenMeasures(this.metric.key());
     Measure measureObj = mock(Measure.class);
     when(measureObj.getDoubleValue()).thenReturn(value);
     measures.add(measureObj);
   }
 
-  private void addIntMeasure(int value){
-    ArrayList<Measure> measures = (ArrayList<Measure>)this.context.getChildrenMeasures(this.metric.key());
+  private void addIntMeasure(int value) {
+    ArrayList<Measure> measures = (ArrayList<Measure>) this.context.getChildrenMeasures(this.metric.key());
     Measure measureObj = mock(Measure.class);
     when(measureObj.getIntValue()).thenReturn(value);
     measures.add(measureObj);
   }
 
-  private Component addParentComponent(Component.Type componentType){
+  private Component addParentComponent(Component.Type componentType) {
     Component component = mock(Component.class);
     when(component.getType()).thenReturn(componentType);
     ArrayList<Measure> measures = new ArrayList<>();
@@ -77,7 +78,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsFloatShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsFloatShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -91,7 +92,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsIntShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsIntShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -105,7 +106,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsFloatShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsFloatShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -119,7 +120,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsIntShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsIntShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -133,7 +134,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsFloatShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsFloatShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.FLOAT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -147,7 +148,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsIntShouldComputeSumCorrectly(){
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsIntShouldComputeSumCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.INT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -161,7 +162,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeForUnsupportedMetricShouldNotAddMeasure(){
+  public void testWhenCallingComputeForUnsupportedMetricShouldNotAddMeasure() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.STRING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -178,7 +179,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeWithUnexpectedComponentShouldNotAddMeasure(){
+  public void testWhenCallingComputeWithUnexpectedComponentShouldNotAddMeasure() {
     TestHelper.setupView(context);
 
     this.measureComputer.compute(context);
@@ -186,7 +187,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeWithFileWithNoMeasureShouldNotThrow(){
+  public void testWhenCallingComputeWithFileWithNoMeasureShouldNotThrow() {
     TestHelper.setupComponentAndIntMeasure(context, Component.Type.FILE, 2, metric.key());
     when(this.context.getMeasure(metric.key())).thenReturn(null);
     this.measureComputer.compute(context);

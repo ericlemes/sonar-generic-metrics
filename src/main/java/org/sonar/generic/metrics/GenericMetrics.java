@@ -3,6 +3,7 @@
  * Copyright (C) 2018
  * http://github.com/ericlemes/sonar-generic-metrics
  */
+
 package org.sonar.generic.metrics;
 
 import java.util.ArrayList;
@@ -31,17 +32,17 @@ public class GenericMetrics implements Metrics {
 
   private Environment environment;
 
-  public GenericMetrics(Configuration config){
+  public GenericMetrics(Configuration config) {
     this.config = config;
     this.fileReader = new FileReaderImpl();
     this.environment = new EnvironmentImpl();
   }
 
-  public void setFileReader(FileReader reader){
+  public void setFileReader(FileReader reader) {
     this.fileReader = reader;
   }
 
-  public void setEnvironment(Environment environment){
+  public void setEnvironment(Environment environment) {
     this.environment = environment;
   }
 
@@ -53,7 +54,7 @@ public class GenericMetrics implements Metrics {
       return GenericMetrics.metrics;
 
     Optional<String> configurationJson = config.get(JSON_DATA_PROPERTY);
-    if (!configurationJson.isPresent()){
+    if (!configurationJson.isPresent()) {
       LOG.warn(JSON_DATA_PROPERTY + " property is empty.");
       return new ArrayList<>();
     }
@@ -77,20 +78,19 @@ public class GenericMetrics implements Metrics {
     return metrics;
   }
 
-  private static List<Metric> parseJson(String jsonString){
+  private static List<Metric> parseJson(String jsonString) {
     List<Metric> result = new ArrayList<>();
     JSONObject jsonData = new JSONObject(jsonString);
     JSONArray metricsJson = jsonData.getJSONArray("metrics");
-    for (int i = 0; i < metricsJson.length(); i++){
+    for (int i = 0; i < metricsJson.length(); i++) {
       JSONObject metric = metricsJson.getJSONObject(i);
       result.add(parseMetric(metric));
     }
     return result;
   }
 
-  private static Metric parseMetric(JSONObject jsonObject){
-    Metric metric =
-      new Metric.Builder(
+  private static Metric parseMetric(JSONObject jsonObject) {
+    Metric metric = new Metric.Builder(
         jsonObject.getString("key"), jsonObject.getString("name"), Metric.ValueType.valueOf(jsonObject.getString("type")))
         .setDescription(jsonObject.getString("description"))
         .setDirection(jsonObject.getInt("direction"))
@@ -101,11 +101,11 @@ public class GenericMetrics implements Metrics {
     return metric;
   }
 
-  public static Metric getMetric(String metricKey){
+  public static Metric getMetric(String metricKey) {
     if (GenericMetrics.metrics == null)
       return null;
 
-    for(Metric m : GenericMetrics.metrics){
+    for (Metric m : GenericMetrics.metrics) {
       if (m.key().equals(metricKey))
         return m;
     }

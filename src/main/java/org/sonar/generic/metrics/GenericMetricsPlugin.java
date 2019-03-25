@@ -11,7 +11,7 @@ import org.sonar.api.Plugin;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.utils.log.Logger;
 
-public class GenericMetricsPlugin implements Plugin{
+public class GenericMetricsPlugin implements Plugin {
 
   private final Logger LOG = LoggerWithDebugCheck.get(GenericMetricsPlugin.class);
 
@@ -19,16 +19,16 @@ public class GenericMetricsPlugin implements Plugin{
 
   private FileReader fileReader;
 
-  public GenericMetricsPlugin(){
-     this.environment = new EnvironmentImpl();
-     this.fileReader = new FileReaderImpl();
+  public GenericMetricsPlugin() {
+    this.environment = new EnvironmentImpl();
+    this.fileReader = new FileReaderImpl();
   }
 
-  public void setEnvironment(Environment environment){
+  public void setEnvironment(Environment environment) {
     this.environment = environment;
   }
 
-  public void setFileReader(FileReader fileReader){
+  public void setFileReader(FileReader fileReader) {
     this.fileReader = fileReader;
   }
 
@@ -40,11 +40,10 @@ public class GenericMetricsPlugin implements Plugin{
     context.addExtension(GenericMetricsSensor.class);
 
     List<Metric> metrics = GenericMetrics.getAllMetrics(environment, fileReader);
-    if (metrics == null){
+    if (metrics == null) {
       LOG.debug(GenericMetrics.CONFIG_ENV_VARIABLE + " not set. ");
-    }
-    else {
-      for(Metric m : metrics){
+    } else {
+      for (Metric m : metrics) {
         LOG.debug("Registering measure computer for metric " + m.key());
         context.addExtension(new GenericMetricMeasureComputer(m));
       }
