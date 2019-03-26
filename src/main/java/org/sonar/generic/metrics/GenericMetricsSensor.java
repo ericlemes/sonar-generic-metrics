@@ -115,8 +115,6 @@ public class GenericMetricsSensor implements Sensor {
       context.newMeasure().forMetric(m).on(input).withValue((double) value).save();
     } else if (m.getType().name().equals(ValueType.RATING.name())) {
       context.newMeasure().forMetric(m).on(input).withValue((int) value).save();
-    } else if (m.getType().name().equals(ValueType.MILLISEC.name())) {
-      context.newMeasure().forMetric(m).on(input).withValue((long) value).save();
     } else {
       LOG.error("Unsupported type " + m.getType().name() + ". For metric " + m.getKey());
       return false;

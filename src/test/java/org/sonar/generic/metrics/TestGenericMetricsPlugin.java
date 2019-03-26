@@ -55,6 +55,6 @@ public class TestGenericMetricsPlugin {
 
     verify(context).addExtension(GenericMetrics.class);
     verify(context).addExtension(GenericMetricsSensor.class);
-    verify(context, times(4)).addExtension(any(Object.class));
+    verify(context, times(6)).addExtension(any(Object.class));
   }
 }

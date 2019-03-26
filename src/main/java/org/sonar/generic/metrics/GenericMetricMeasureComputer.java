@@ -43,6 +43,7 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
   }
 
   private void computeChildMeasure(MeasureComputerContext context) {
+    System.out.println(metric.getType());
     switch (metric.getType()) {
     case INT:
       computeIntChildMeasure(context);
@@ -56,10 +57,8 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
     case RATING:
       computeRatingChildMeasure(context);
       break;
-    case MILLISEC:
-      computeMillsecChildMeasure(context);
-      break;
     default:
+      System.out.println("Im here");
       throw new NotImplementedException("No compute method for " + metric.getType());
     }
   }
@@ -84,11 +83,8 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
     double sum = 0;
     double noMeasures = 0;
     for (Measure m : context.getChildrenMeasures(metric.key())) {
-      double val = m.getDoubleValue();
-      if (val > 0) {
-        noMeasures++;
-        sum += val;
-      }
+      noMeasures++;
+      sum += m.getDoubleValue();
     }
     double total = (noMeasures > 0) ? (sum / noMeasures) : 0.0;
     context.addMeasure(metric.key(), total);
@@ -98,21 +94,10 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
     double sum = 0;
     double noMeasures = 0;
     for (Measure m : context.getChildrenMeasures(metric.key())) {
-      double val = m.getIntValue();
-      if (val > 0) {
-        noMeasures++;
-        sum += val;
-      }
+      noMeasures++;
+      sum += m.getIntValue();
     }
     int raiting = (noMeasures > 0) ? (int) Math.round(sum / noMeasures) : 0;
     context.addMeasure(metric.key(), raiting);
-  }
-
-  private void computeMillsecChildMeasure(MeasureComputerContext context) {
-    long sum = 0;
-    for (Measure m : context.getChildrenMeasures(metric.key())) {
-      sum += m.getLongValue();
-    }
-    context.addMeasure(metric.key(), sum);
   }
 }

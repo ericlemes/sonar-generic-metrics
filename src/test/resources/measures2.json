@@ -41,5 +41,10 @@
 			"value": 2.5
 		}
 	],
-	"project-measures": []
+	"project-measures": [
+		{
+			"metric-key": "metric2",
+			"value": 4.5
+		}
+	]
 }

@@ -131,8 +131,8 @@ In your SonarQube instance, you will see something similar to:
 | INT | Integer | Supported |
 | FLOAT | Double | Supported |
 | PERCENT | Double | Supported |
-| MILLISEC | Long | Supported |
 | RATING | Integer | Supported |
+| MILLISEC | Long | Not Supported |
 | BOOL | Boolean | Not Supported |
 | STRING | String | Not Supported |
 | DATA | String | Not Supported |
