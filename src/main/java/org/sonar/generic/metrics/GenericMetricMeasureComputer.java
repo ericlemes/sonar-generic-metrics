@@ -43,7 +43,6 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
   }
 
   private void computeChildMeasure(MeasureComputerContext context) {
-    System.out.println(metric.getType());
     switch (metric.getType()) {
     case INT:
       computeIntChildMeasure(context);
@@ -58,8 +57,7 @@ public class GenericMetricMeasureComputer implements MeasureComputer {
       computeRatingChildMeasure(context);
       break;
     default:
-      System.out.println("Im here");
-      throw new NotImplementedException("No compute method for " + metric.getType());
+      break;
     }
   }
 

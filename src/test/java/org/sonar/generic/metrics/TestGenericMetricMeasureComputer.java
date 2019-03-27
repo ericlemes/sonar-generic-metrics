@@ -198,7 +198,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndMetricIsPercentAndNoMeasuresShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndMetricIsPercentAndNoMeasuresShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.PERCENT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -210,7 +210,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsPercentShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsPercentShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.PERCENT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -224,7 +224,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsPercentShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsPercentShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.PERCENT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -238,7 +238,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsPercentShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsPercentShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.PERCENT).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -252,7 +252,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndMetricIsRaitingAndNoMeasuresShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndMetricIsRaitingAndNoMeasuresShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.RATING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -264,7 +264,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsRatingShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsProjectAndMetricIsRatingShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.RATING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -278,7 +278,7 @@ public class TestGenericMetricMeasureComputer {
   }
 
   @Test
-  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsRatingShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsModuleAndMetricIsRatingShouldComputAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.RATING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -292,7 +292,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsRatingShouldComputeSumCorrectly() {
+  public void testWhenCallingComputeAndComponentIsDirectoryAndMetricIsRatingShouldComputeAverageCorrectly() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.RATING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -322,8 +322,8 @@ public class TestGenericMetricMeasureComputer {
     verify(context, times(0)).addMeasure(eq(metric.key()), any(String.class));
   }
   
-  @Test(expected = NotImplementedException.class)
-  public void testWhenCallingComputeAndComponentIsValidForUnsupportedMetricShouldThrow() {
+  @Test
+  public void testWhenCallingComputeAndComponentIsValidForUnsupportedMetricShouldDoNothing() {
     this.metric = new org.sonar.api.measures.Metric.Builder("metrickey", "Name", Metric.ValueType.STRING).create();
     this.measureComputer = new GenericMetricMeasureComputer(metric);
 
@@ -331,6 +331,7 @@ public class TestGenericMetricMeasureComputer {
     addStringMeasure("A string");
     
     this.measureComputer.compute(context);
+    verify(context, times(0)).addMeasure(eq(metric.key()), any(String.class));
   }
 
   @Test
@@ -342,7 +343,7 @@ public class TestGenericMetricMeasureComputer {
   }
   
   @Test
-  public void testWhenCallingComputeWithMeasureAllReadyAddedShowNotAddMeasure() {
+  public void testWhenCallingComputeWithMeasureAllReadyAddedShouldNotAddMeasure() {
     TestHelper.setupComponentAndIntMeasure(context, Component.Type.FILE, 2, metric.key());
     
     addParentComponent(Component.Type.PROJECT);
@@ -351,6 +352,18 @@ public class TestGenericMetricMeasureComputer {
     
     this.measureComputer.compute(context);
     verify(context, times(0)).addMeasure(anyString(), anyInt());
+  }
+  
+  @Test
+  public void testWhenCallingComputeWithMeasureAllReadyAddedShouldReturnAddedProjectMeasure() {
+    TestHelper.setupComponentAndIntMeasure(context, Component.Type.FILE, 2, metric.key());
+    
+    addParentComponent(Component.Type.PROJECT);
+    addIntMeasure(5);
+    addIntMeasure(10);
+    
+    this.measureComputer.compute(context);
+    Assert.assertEquals(2, context.getMeasure(metric.getKey()).getIntValue());
   }
 
   @Test
