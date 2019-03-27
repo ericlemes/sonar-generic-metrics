@@ -3,7 +3,6 @@
  * Copyright (C) 2018
  * http://github.com/ericlemes/sonar-generic-metrics
  */
-
 package org.sonar.generic.metrics;
 
 import static org.junit.Assert.*;

@@ -131,7 +131,7 @@
           </execution>
         </executions>
       </plugin>
-       <plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.16</version>
@@ -158,13 +158,13 @@
             <goals>
               <goal>check</goal>
             </goals>
-             <configuration>
+            <configuration>
               <rules>
-                implementation is needed only for Maven 2
+                <!-- implementation is needed only for Maven 2 -->
                 <rule implementation="org.jacoco.maven.RuleConfiguration">
                   <element>BUNDLE</element>
                   <limits>
-                    implementation is needed only for Maven 2
+                    <!-- implementation is needed only for Maven 2 -->
                     <limit implementation="org.jacoco.report.check.Limit">
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
