@@ -60,7 +60,7 @@ public class TestGenericMetrics {
     when(configurationMock.get(GenericMetrics.JSON_DATA_PROPERTY)).thenReturn(Optional.of("filename"));
 
     List<Metric> metrics = genericMetrics.getMetrics();
-    assertEquals(2, metrics.size());
+    assertEquals(4, metrics.size());
     assertEquals("metric1", metrics.get(0).getKey());
     assertEquals("Metric 1", metrics.get(0).getName());
     assertEquals(Metric.ValueType.INT, metrics.get(0).getType());
@@ -115,7 +115,7 @@ public class TestGenericMetrics {
 
     List<Metric> metrics = GenericMetrics.getAllMetrics(environment, fileReader);
 
-    assertEquals(2, metrics.size());
+    assertEquals(4, metrics.size());
   }
 
   @Test

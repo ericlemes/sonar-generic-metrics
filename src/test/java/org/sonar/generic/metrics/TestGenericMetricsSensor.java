@@ -42,6 +42,9 @@ public class TestGenericMetricsSensor {
 
   @Mock
   private FilePredicates filePredicates;
+  
+  @Mock
+  private InputModule sensorContextModule;
 
   @Before
   public void SetUp(){
@@ -56,6 +59,8 @@ public class TestGenericMetricsSensor {
 
     NewMeasure measure = setupMockNewMeasure();
     when(sensorContext.newMeasure()).thenReturn(measure);
+    
+    when(sensorContext.module()).thenReturn(sensorContextModule);
   }
 
   private NewMeasure setupMockNewMeasure(){
@@ -129,7 +134,7 @@ public class TestGenericMetricsSensor {
 
     sensor.execute(this.sensorContext);
 
-    verify(sensorContext, times(4)).newMeasure();
+    verify(sensorContext, times(7)).newMeasure();
   }
 
   @Test
@@ -188,6 +193,6 @@ public class TestGenericMetricsSensor {
     readMetrics();
 
     sensor.execute(this.sensorContext);
-    verify(sensorContext, times(0)).newMeasure();
+    verify(sensorContext, times(1)).newMeasure();
   }
 }

@@ -1,6 +1,6 @@
 {
 	"metrics": [
-		{		
+		{
 			"key": "metric1",
 			"name": "Metric 1",
 			"type": "INT",
@@ -9,7 +9,7 @@
 			"qualitative": false,
 			"domain": "Generic Metric"
 		},
-		{		
+		{
 			"key": "metric2",
 			"name": "Metric 2",
 			"type": "FLOAT",
@@ -17,28 +17,62 @@
 			"direction": 0,
 			"qualitative": true,
 			"domain": "Generic Metric"
+		},
+		{
+			"key": "metric3",
+			"name": "Metric 3",
+			"type": "PERCENT",
+			"description": "Description Metric 3",
+			"direction": 0,
+			"qualitative": true,
+			"domain": "Generic Metric"
+		},
+		{
+			"key": "metric4",
+			"name": "Metric 4",
+			"type": "RATING",
+			"description": "Description Metric 4",
+			"direction": 0,
+			"qualitative": true,
+			"domain": "Generic Metric"
 		}
 	],
-    "measures": [
-        {
+	"file-measures": [
+		{
 			"metric-key": "metric1",
-            "file": "/full/file/path1",
-            "value": 1
-        },
-        {
+			"file": "/full/file/path1",
+			"value": 1
+		},
+		{
 			"metric-key": "metric1",
-            "file": "/full/file/path2",
-            "value": 2
-        },
+			"file": "/full/file/path2",
+			"value": 2
+		},
 		{
 			"metric-key": "metric2",
-            "file": "/full/file/path1",
-            "value": 1.5
-        },
-        {
+			"file": "/full/file/path1",
+			"value": 1.5
+		},
+		{
 			"metric-key": "metric2",
-            "file": "/full/file/path2",
-            "value": 2.5
-        }		
-    ]
+			"file": "/full/file/path2",
+			"value": 2.5
+		},
+		{
+			"metric-key": "metric3",
+			"file": "/full/file/path1",
+			"value": 60.75
+		},
+		{
+			"metric-key": "metric4",
+			"file": "/full/file/path1",
+			"value": 4
+		}
+	],
+	"project-measures": [
+		{
+			"metric-key": "metric2",
+			"value": 4.5
+		}
+	]
 }
