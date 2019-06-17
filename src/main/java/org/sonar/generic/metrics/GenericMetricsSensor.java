@@ -68,6 +68,12 @@ public class GenericMetricsSensor implements Sensor {
       JSONObject measure = fileMeasures.getJSONObject(i);
       processFileMeasure(context, measure);
     }
+    
+    JSONArray rawMeasures = rootObject.getJSONArray("raw-measures");
+    for (int i = 0; i < rawMeasures.length(); i++) {
+      JSONObject measure = rawMeasures.getJSONObject(i);
+      processFileMeasure(context, measure);
+    }
   }
 
   private void processProjectMeasure(SensorContext context, JSONObject measure) {
@@ -115,6 +121,10 @@ public class GenericMetricsSensor implements Sensor {
       context.newMeasure().forMetric(m).on(input).withValue((double) value).save();
     } else if (m.getType().name().equals(ValueType.RATING.name())) {
       context.newMeasure().forMetric(m).on(input).withValue((int) value).save();
+    } else if (m.getType().name().equals(ValueType.DATA.name())) {
+      context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
+    } else if (m.getType().name().equals(ValueType.STRING.name())) {
+      context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
     } else {
       LOG.error("Unsupported type " + m.getType().name() + ". For metric " + m.getKey());
       return false;

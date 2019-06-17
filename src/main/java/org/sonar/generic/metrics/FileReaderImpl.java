@@ -30,5 +30,6 @@ public class FileReaderImpl implements FileReader {
       LOG.error("Could not read file: " + fileName);
       return "";
     }
+    
   }
 }
