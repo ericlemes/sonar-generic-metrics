@@ -7,6 +7,7 @@
 package org.sonar.generic.metrics;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Optional;
 
 import org.json.JSONArray;
@@ -122,7 +123,11 @@ public class GenericMetricsSensor implements Sensor {
     } else if (m.getType().name().equals(ValueType.RATING.name())) {
       context.newMeasure().forMetric(m).on(input).withValue((int) value).save();
     } else if (m.getType().name().equals(ValueType.DATA.name())) {
-      context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
+      if (value instanceof JSONObject) 
+        value = ((JSONObject)value).toString();
+      if (value instanceof JSONArray) 
+        value = ((JSONArray)value).toString();
+      context.newMeasure().forMetric(m).on(input).withValue(value.toString()).save();
     } else if (m.getType().name().equals(ValueType.STRING.name())) {
       context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
     } else {
