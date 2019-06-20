@@ -35,6 +35,24 @@
 			"direction": 0,
 			"qualitative": true,
 			"domain": "Generic Metric"
+		},
+		{
+			"key": "metric5",
+			"name": "Metric 5",
+			"type": "STRING",
+			"description": "Description Metric 5",
+			"direction": 0,
+			"qualitative": true,
+			"domain": "Generic Metric"
+		},
+		{
+			"key": "metric6",
+			"name": "Metric 6",
+			"type": "DATA",
+			"description": "Description Metric 6",
+			"direction": 0,
+			"qualitative": true,
+			"domain": "Generic Metric"
 		}
 	],
 	"file-measures": [
@@ -67,6 +85,18 @@
 			"metric-key": "metric4",
 			"file": "/full/file/path1",
 			"value": 4
+		},
+		{
+			"metric-key": "metric5",
+			"file": "/full/file/path1",
+			"value": "This is a String"
+		},
+		{
+			"metric-key": "metric6",
+			"file": "/full/file/path1",
+			"value": {
+				"data": "This is json"
+			}
 		}
 	],
 	"project-measures": [

@@ -132,10 +132,10 @@ In your SonarQube instance, you will see something similar to:
 | FLOAT | Double | Supported |
 | PERCENT | Double | Supported |
 | RATING | Integer | Supported |
+| STRING | String | Supported |
+| DATA | String | Supported |
 | MILLISEC | Long | Not Supported |
 | BOOL | Boolean | Not Supported |
-| STRING | String | Not Supported |
-| DATA | String | Not Supported |
 | LEVEL | [Metric.Level](http://javadocs.sonarsource.org/latest/apidocs/index.html?org/sonar/api/measures/Metric.Level.html) | Not Supported |
 | DISTRIB | String | Not Supported |
 | WORK_DUR | Long | Not Supported |
