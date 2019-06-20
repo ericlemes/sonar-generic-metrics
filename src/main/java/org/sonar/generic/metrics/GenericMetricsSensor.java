@@ -120,7 +120,7 @@ public class GenericMetricsSensor implements Sensor {
         value = ((JSONObject)value).toString();
       if (value instanceof JSONArray)
         value = ((JSONArray)value).toString();
-      context.newMeasure().forMetric(m).on(input).withValue(value.toString()).save();
+      context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
     } else if (m.getType().name().equals(ValueType.STRING.name())) {
       context.newMeasure().forMetric(m).on(input).withValue((String) value).save();
     } else {
