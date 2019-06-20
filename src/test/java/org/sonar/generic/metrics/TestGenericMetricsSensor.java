@@ -135,7 +135,7 @@ public class TestGenericMetricsSensor {
 
     sensor.execute(this.sensorContext);
 
-    verify(sensorContext, times(9)).newMeasure();
+    verify(sensorContext, times(10)).newMeasure();
   }
 
   @Test

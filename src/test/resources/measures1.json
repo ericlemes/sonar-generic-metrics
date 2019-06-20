@@ -97,6 +97,18 @@
 			"value": {
 				"data": "This is json"
 			}
+		},
+		{
+			"metric-key": "metric6",
+			"file": "/full/file/path1",
+			"value": [
+				{
+					"name": "item1"
+				},
+				{
+					"name": "item2"
+				}
+			]
 		}
 	],
 	"project-measures": [
