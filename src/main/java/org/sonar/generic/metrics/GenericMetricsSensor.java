@@ -41,7 +41,10 @@ public class GenericMetricsSensor implements Sensor {
 
   @Override
   public void describe(SensorDescriptor descriptor) {
-    descriptor.name("Generic Metrics Sensor").onlyOnFileType(InputFile.Type.MAIN);
+    descriptor
+      .name("Generic Metrics Sensor")
+      .onlyOnFileType(InputFile.Type.MAIN)
+      .global();
   }
 
   @Override
