@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.InputComponent;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
@@ -96,7 +97,7 @@ public class GenericMetricsSensor implements Sensor {
       return;
     }
 
-    InputComponent file = context.fileSystem().inputFile(predicate);
+    InputFile file = context.fileSystem().inputFile(predicate);
 
     if (file == null) {
       predicate = context.fileSystem().predicates().hasFilename(new File(fileName).getName());
@@ -114,6 +115,11 @@ public class GenericMetricsSensor implements Sensor {
 
     if (file == null) {
       LOG.warn(fileName + " not found during scan");
+      return;
+    }
+
+    if (file.type() == Type.TEST) {
+      LOG.debug("Skipping " + fileName + " , this is test file.");
       return;
     }
 
