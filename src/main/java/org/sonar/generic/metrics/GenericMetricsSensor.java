@@ -96,6 +96,20 @@ public class GenericMetricsSensor implements Sensor {
     InputComponent file = context.fileSystem().inputFile(predicate);
 
     if (file == null) {
+      predicate = context.fileSystem().predicates().hasFilename(new File(fileName).getName());
+      Iterable<InputFile> inputFilesWithMatchingFileName = context.fileSystem().inputFiles(predicate);
+
+      for (InputFile inputFile : inputFilesWithMatchingFileName) {
+        if (inputFile.uri().getPath().endsWith(fileName))
+        {
+          if (file != null)
+            LOG.error("For entry from measure file " + fileName + " found more then one entries in file system");
+          file = inputFile;
+        }
+      }
+    }
+
+    if (file == null) {
       LOG.warn(fileName + " not found during scan");
       return;
     }
