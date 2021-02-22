@@ -3,7 +3,7 @@
 		{
 			"key": "metric1",
 			"name": "Metric 1",
-			"type": "STRING",
+			"type": "BOOL",
 			"description": "Description Metric 1",
 			"direction": -1,
 			"qualitative": false,
@@ -12,7 +12,7 @@
 		{
 			"key": "metric2",
 			"name": "Metric 2",
-			"type": "STRING",
+			"type": "BOOL",
 			"description": "Description Metric 2",
 			"direction": 0,
 			"qualitative": true,
@@ -23,28 +23,28 @@
 		{
 			"metric-key": "metric1",
 			"file": "/full/file/path1",
-			"value": 1
+			"value": true
 		},
 		{
 			"metric-key": "metric1",
 			"file": "/full/file/path2",
-			"value": 2
+			"value": false
 		},
 		{
 			"metric-key": "metric2",
 			"file": "/full/file/path1",
-			"value": 1.5
+			"value": true
 		},
 		{
 			"metric-key": "metric2",
 			"file": "/full/file/path2",
-			"value": 2.5
+			"value": true
 		}
 	],
 	"project-measures": [
 		{
 			"metric-key": "metric2",
-			"value": 4.5
+			"value": false
 		}
 	]
 }

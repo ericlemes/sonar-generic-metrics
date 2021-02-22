@@ -69,6 +69,7 @@ public class TestGenericMetricsSensor {
     when(newMeasure.withValue(any(Integer.class))).thenReturn(newMeasure);
     when(newMeasure.withValue(any(Float.class))).thenReturn(newMeasure);
     when(newMeasure.withValue(any(Double.class))).thenReturn(newMeasure);
+    when(newMeasure.withValue(any(String.class))).thenReturn(newMeasure);
     when(newMeasure.forMetric(any(Metric.class))).thenReturn(newMeasure);
     return newMeasure;
   }
@@ -134,7 +135,7 @@ public class TestGenericMetricsSensor {
 
     sensor.execute(this.sensorContext);
 
-    verify(sensorContext, times(7)).newMeasure();
+    verify(sensorContext, times(10)).newMeasure();
   }
 
   @Test
