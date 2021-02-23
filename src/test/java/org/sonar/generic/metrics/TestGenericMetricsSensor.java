@@ -75,13 +75,33 @@ public class TestGenericMetricsSensor {
   }
 
   @Test
-  public void whenDefiningShouldAppendNameAndFileTypeOnDescriptor(){
-    when(descriptor.name("Generic Metrics Sensor")).thenReturn(descriptor);
+  public void whenDefiningShouldAppendName(){
+    when(descriptor.name(anyString())).thenReturn(descriptor);
+    when(descriptor.onlyOnFileType(any())).thenReturn(descriptor);
 
     sensor.describe(descriptor);
 
     verify(descriptor, times(1)).name("Generic Metrics Sensor");
+  }
+
+  @Test
+  public void whenDefiningShouldAppendFileTypeOnDescriptor(){
+    when(descriptor.name(anyString())).thenReturn(descriptor);
+    when(descriptor.onlyOnFileType(any())).thenReturn(descriptor);
+
+    sensor.describe(descriptor);
+
     verify(descriptor, times(1)).onlyOnFileType(InputFile.Type.MAIN);
+  }
+
+  @Test
+  public void whenDefiningShouldAppendGlobal(){
+    when(descriptor.name(anyString())).thenReturn(descriptor);
+    when(descriptor.onlyOnFileType(any())).thenReturn(descriptor);
+
+    sensor.describe(descriptor);
+
+    verify(descriptor, times(1)).global();
   }
 
   @Test(expected = JSONException.class)

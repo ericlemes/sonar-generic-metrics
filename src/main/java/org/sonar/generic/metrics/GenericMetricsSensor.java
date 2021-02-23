@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.InputComponent;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
@@ -41,7 +42,10 @@ public class GenericMetricsSensor implements Sensor {
 
   @Override
   public void describe(SensorDescriptor descriptor) {
-    descriptor.name("Generic Metrics Sensor").onlyOnFileType(InputFile.Type.MAIN);
+    descriptor
+      .name("Generic Metrics Sensor")
+      .onlyOnFileType(InputFile.Type.MAIN)
+      .global();
   }
 
   @Override
@@ -93,10 +97,29 @@ public class GenericMetricsSensor implements Sensor {
       return;
     }
 
-    InputComponent file = context.fileSystem().inputFile(predicate);
+    InputFile file = context.fileSystem().inputFile(predicate);
+
+    if (file == null) {
+      predicate = context.fileSystem().predicates().hasFilename(new File(fileName).getName());
+      Iterable<InputFile> inputFilesWithMatchingFileName = context.fileSystem().inputFiles(predicate);
+
+      for (InputFile inputFile : inputFilesWithMatchingFileName) {
+        if (inputFile.uri().getPath().endsWith(fileName))
+        {
+          if (file != null)
+            LOG.error("For entry from measure file " + fileName + " found more then one entries in file system");
+          file = inputFile;
+        }
+      }
+    }
 
     if (file == null) {
       LOG.warn(fileName + " not found during scan");
+      return;
+    }
+
+    if (file.type() == Type.TEST) {
+      LOG.debug("Skipping " + fileName + " , this is test file.");
       return;
     }
 
