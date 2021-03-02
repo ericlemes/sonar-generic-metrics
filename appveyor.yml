@@ -24,10 +24,9 @@ cache:
 artifacts:
   - path: 'target\*.jar'
     name: Plugin
-after_test:    
+after_test:
   - ps: |
       $env:PATH = 'C:\msys64\usr\bin;' + $env:PATH
       Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-      bash codecov.sh -f "target\site\jacoco\jacoco.xml" -t 7ed90d2b-f167-4464-ada6-101b2592061e
-  
-  
+      bash codecov.sh -f "target\site\jacoco\jacoco.xml" -t 7ed90d2b-f167-4464-ada6-101b2592061e -U "-s" -A "-s"
+
