@@ -77,11 +77,13 @@ public class TestGenericMetricsSensor {
   @Test
   public void whenDefiningShouldAppendNameAndFileTypeOnDescriptor(){
     when(descriptor.name("Generic Metrics Sensor")).thenReturn(descriptor);
+    when(descriptor.onlyOnFileType(InputFile.Type.MAIN)).thenReturn(descriptor);
 
     sensor.describe(descriptor);
 
     verify(descriptor, times(1)).name("Generic Metrics Sensor");
     verify(descriptor, times(1)).onlyOnFileType(InputFile.Type.MAIN);
+    verify(descriptor, times(1)).global();
   }
 
   @Test(expected = JSONException.class)
