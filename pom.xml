@@ -26,7 +26,7 @@
     <license.mailto>http://github.com/ericlemes/sonar-generic-metrics</license.mailto>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sonar.apiVersion>6.7.4</sonar.apiVersion>
-    <jdk.min.version>1.11</jdk.min.version>
+    <jdk.min.version>11</jdk.min.version>
     <sonar.sources>src/main/java</sonar.sources>	
   </properties>
 
@@ -97,7 +97,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.6.2</version>
         <configuration>
           <source>${jdk.min.version}</source>
           <target>${jdk.min.version}</target>
