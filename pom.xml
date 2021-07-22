@@ -25,9 +25,9 @@
     <license.owner>Eric Lemes</license.owner>
     <license.mailto>http://github.com/ericlemes/sonar-generic-metrics</license.mailto>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.apiVersion>6.7</sonar.apiVersion>
-    <jdk.min.version>1.8</jdk.min.version>
-    <sonar.sources>src/main/java</sonar.sources>
+    <sonar.apiVersion>6.7.4</sonar.apiVersion>
+    <jdk.min.version>1.11</jdk.min.version>
+    <sonar.sources>src/main/java</sonar.sources>	
   </properties>
 
   <dependencies>
@@ -37,6 +37,12 @@
       <version>${sonar.apiVersion}</version>
       <scope>provided</scope>
     </dependency>
+	<dependency>
+		<groupId>commons-logging</groupId>
+		<artifactId>commons-logging</artifactId>
+		<version>LATEST</version>
+		<scope>provided</scope>
+	</dependency>	
     <dependency>
       <!-- packaged with the plugin -->
       <groupId>commons-lang</groupId>
@@ -58,10 +64,10 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
+	<dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.15.0</version>
+      <version>2.27.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -91,7 +97,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.8.0</version>
         <configuration>
           <source>${jdk.min.version}</source>
           <target>${jdk.min.version}</target>
@@ -134,12 +140,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.16</version>
+        <version>2.22.1</version>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.0</version>
+        <version>0.8.3</version>
         <executions>
           <execution>
             <id>default-prepare-agent</id>
