@@ -84,6 +84,10 @@ public class GenericMetricsSensor implements Sensor {
 
   private void processFileMeasure(SensorContext context, JSONObject measure) {
     String fileName = measure.getString("file");
+    if (fileName.startsWith("//")) {
+      LOG.warn(fileName + " not found during scan");
+      return;
+    }    
     FilePredicate predicate = context.fileSystem().predicates().is(new File(fileName));
 
     String metricKey = measure.getString("metric-key");
