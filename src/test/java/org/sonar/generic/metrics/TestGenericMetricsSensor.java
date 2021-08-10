@@ -184,9 +184,7 @@ public class TestGenericMetricsSensor {
   @Test
   public void whenExecutingAndCanReadFileAndFileInJsonNotFoundShouldNotPublishMetrics() {
     FilePredicate filePredicate1 = mock(FilePredicate.class);
-    when(filePredicates.is(any(File.class))).thenReturn(filePredicate1);
-
-    InputFile inputFile1 = mock(InputFile.class);
+    when(filePredicates.is(any(File.class))).thenReturn(filePredicate1);    
 
     when(fileSystem.inputFile(filePredicate1)).thenReturn(null);
 
@@ -198,4 +196,20 @@ public class TestGenericMetricsSensor {
     sensor.execute(this.sensorContext);
     verify(sensorContext, times(1)).newMeasure();
   }
+
+  @Test
+  public void whenExecutingAndCanReadFileButHasFileWithFullPerforcePathShouldNotPublishMetrics() throws IOException{
+    FilePredicate filePredicate1 = mock(FilePredicate.class);
+    when(filePredicates.is(any(File.class))).thenReturn(filePredicate1);
+    InputFile inputFile1 = mock(InputFile.class);    
+    when(fileSystem.inputFile(filePredicate1)).thenReturn(inputFile1);
+
+    String json = readResourceAsString("measures3.json");
+    when(fileReader.readFile("filename")).thenReturn(json);
+
+    readMetrics();
+
+    sensor.execute(this.sensorContext);
+    verify(sensorContext, times(0)).newMeasure();
+  }  
 }

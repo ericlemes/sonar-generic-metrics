@@ -1,0 +1,23 @@
+{
+	"metrics": [
+		{
+			"key": "metric1",
+			"name": "Metric 1",
+			"type": "INT",
+			"description": "Description Metric 1",
+			"direction": -1,
+			"qualitative": false,
+			"domain": "Generic Metric"
+		}
+	],
+	"file-measures": [
+		{
+			"metric-key": "metric1",
+			"file": "//full/file/path1",
+			"value": 42
+		}
+	],
+	"project-measures": [
+
+	]
+}
