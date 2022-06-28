@@ -25,7 +25,7 @@
     <license.owner>Eric Lemes</license.owner>
     <license.mailto>http://github.com/ericlemes/sonar-generic-metrics</license.mailto>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.apiVersion>6.7.4</sonar.apiVersion>
+    <sonar.apiVersion>7.4</sonar.apiVersion>
     <jdk.min.version>11</jdk.min.version>
     <sonar.sources>src/main/java</sonar.sources>	
   </properties>
